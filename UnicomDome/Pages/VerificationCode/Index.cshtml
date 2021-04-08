@@ -1,0 +1,85 @@
+﻿@page
+@model IndexModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <!-- 国内使用 -->
+    <script src="https://g.alicdn.com/AWSC/WebUMID/1.87.0/um.js" id="AWSC_umidPCModule"></script>
+    <script src="https://g.alicdn.com/AWSC/uab/1.140.0/collina.js" id="AWSC_uabModule"></script>
+    @*<script type="text/javascript" charset="utf-8" src="https://g.alicdn.com/sd/ncpc/nc.js?t=2020073010"></script>*@
+    <script type="text/javascript" charset="utf-8" src="//g.alicdn.com/sd/nch5/index.js?t=2020073010"></script>
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+
+    <!-- 若您的主要用户来源于海外，请替换使用下面的js资源 -->
+    <!-- <script type="text/javascript" charset="utf-8" src="aeis.alicdn.com/sd/ncpc/nc.js?t=2015052012"></script> -->
+
+</head>
+
+<body>
+    <div id="__nc" style="margin-left:auto;margin-right:auto;width:80%;height:100px;padding-top:100px;">
+        <div id="verificationCode"></div>
+    </div>
+    <!--<div id="verifyCode" class="nc-container"></div>--> <!--No-Captcha渲染的位置，其中 class 中必须包含 nc-container-->
+    <input type="text" id="aliToken" name="aliSignBean.token" value="" />
+    <input type="text" id="aliSessionId" name="aliSignBean.sessionid" value="" />
+    <input type="text" id="aliSig" name="aliSignBean.sig" value="" />
+
+    <script type="text/javascript">
+        var nc_token = ["FFFF0N0N000000009296", new Date().getTime(), Math.random()].join(":");
+        var nc = NoCaptcha.init({
+            renderTo: "#verificationCode",
+            appkey: "FFFF0N0N000000009296",
+            scene: "nc_other_h5",
+            token: nc_token,
+            trans: {
+                key1: "code200"
+            },
+            elementID: ["usernameID"],
+            is_Opt: 0,
+            language: "cn",
+            timeout: 1e3,
+            retryTimes: 3,
+            errorTimes: 3,
+            inline: !1,
+            apimap: {},
+            bannerHidden: !1,
+            initHidden: !1,
+            callback: function (e) {
+                document.getElementById("aliToken").setAttribute("sms", nc_token);
+                document.getElementById("aliSessionId").setAttribute("sms", e.csessionid); 
+                document.getElementById("aliSig").setAttribute("sms", e.sig);
+                window.console && console.log(nc_token)
+                window.console && console.log(e.csessionid)
+                window.console && console.log(e.sig)
+                @*return window.console && console.log("token:" + nc_token), window.console && console.log("seccionId:" + e.csessionid),
+                    window.console && console.log("sig:" + e.sig), $("#aliToken").val(nc_token), $("#aliSessionId").val(e.csessionid),
+                    $("#aliSig").val(e.sig), null != $("#buyCardPhoneNo").val() ? void needDubboCheck() : void needDubboCheck()*@
+            },
+            error: function () {
+            }
+        })
+
+        NoCaptcha.setEnabled(true),
+            nc.reset(),
+            NoCaptcha.upLang("cn", {
+                LOADING: "加载中...",
+                SLIDER_LABEL: "请向右滑动验证",
+                CHECK_Y: "验证通过",
+                ERROR_TITLE: "非常抱歉，这出错了...",
+                CHECK_N: "验证未通过",
+                OVERLAY_INFORM: "经检测你当前操作环境存在风险，请输入验证码",
+                TIPS_TITLE: "验证码错误，请重新输入"
+            })
+
+        var closeAliCaptcha = function () {
+            $(".mask").hide()
+        };
+
+    </script>
+
+</body>
+</html>
